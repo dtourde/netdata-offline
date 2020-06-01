@@ -5,12 +5,13 @@ set -euo pipefail
 # A POSIX variable
 OPTIND=1
 NETDATA_VERSION="v1.19.0"
-NETDATA_FILE="./netdata-${NETDATA_VERSION}.gz.run"
-NETDATA_CHECKSUM="./sha256sums.txt"
-NETDATA_INSTALL_SCRIPT="./kickstart-static64.sh"
-NETDATA_ENVIRONMENT="./.environment"
-NETDATA_UNINSTALLER="./netdata-uninstaller.sh"
-NETDATA_ETC_FOLDER="/etc/netdata"
+NETDATA_FILE="$(pwd)/netdata-${NETDATA_VERSION}.gz.run"
+NETDATA_CHECKSUM="$(pwd)/sha256sums.txt"
+NETDATA_INSTALL_SCRIPT="$(pwd)/kickstart-static64.sh"
+NETDATA_ENVIRONMENT="$(pwd)/.environment"
+NETDATA_UNINSTALLER="$(pwd)/netdata-uninstaller.sh"
+NETDATA_ETC_FOLDER="/opt/netdata/etc/netdata"
+NETDATA_NOTIFY_FILE="${NETDATA_ETC_FOLDER}/health_alarm_notify.conf"
 FILES=(${NETDATA_FILE} ${NETDATA_CHECKSUM} ${NETDATA_INSTALL_SCRIPT} ${NETDATA_ENVIRONMENT} ${NETDATA_UNINSTALLER})
 
 show_help(){
@@ -39,8 +40,8 @@ email_notif() {
 	if [[ ${1} != "YES" && ${1} != "NO" ]]; then
 		echo "email_notify parameter : ${1}; expected YES or NO"
 		exit 2
-	echo "SEND_EMAIL="${notify} > /etc/netdata/conf.d/health_alarm_notify.conf
 	fi
+	echo "SEND_EMAIL="${1} > ${NETDATA_NOTIFY_FILE}
 }
 
 remove_etc_folder() {
@@ -51,14 +52,18 @@ install_netdata() {
 	# Assume files are checked
 	bash ${NETDATA_INSTALL_SCRIPT} --local-files ${NETDATA_FILE} ${NETDATA_CHECKSUM}
 	email_notif "NO"
+	remove_etc_folder
 }
 
 uninstall_netdata() {
 	# Assume files are checked
-	${NETDATA_PREFIX}/usr/libexec/netdata/netdata-uninstaller.sh --yes --env ${NETDATA_ENVIRONMENT}
+	${NETDATA_UNINSTALLER} --yes --force --env ${NETDATA_ENVIRONMENT}
+	remove_etc_folder
 }
 
-while getopts "h?iu:" opt; do
+check_files
+
+while getopts "h?iu" opt; do
 	case "${opt}" in
 	h|\?)
 		show_help
