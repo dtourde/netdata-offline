@@ -1,0 +1,5 @@
+8e802639ca58586273726df405f6382bb95e7a28af1554860d852eb94ed33717 *./latest-version.txt
+a038ee77f8f405753e90a8062c39e36c1ecc0babae7cc5595cdffe0cff2de3e3 *./netdata-latest.gz.run
+36c46bd95c0d8138e2f1a886c9b9fb6a9fd22fbf9d3097420c10b868ed23e355 *./netdata-latest.tar.gz
+a038ee77f8f405753e90a8062c39e36c1ecc0babae7cc5595cdffe0cff2de3e3 *./netdata-v1.19.0.gz.run
+36c46bd95c0d8138e2f1a886c9b9fb6a9fd22fbf9d3097420c10b868ed23e355 *./netdata-v1.19.0.tar.gz

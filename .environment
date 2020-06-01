@@ -1,0 +1,12 @@
+# Created by installer
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+CFLAGS="-static -O3"
+NETDATA_PREFIX="/opt/netdata"
+NETDATA_CONFIGURE_OPTIONS=""
+NETDATA_ADDED_TO_GROUPS=" adm squid nobody"
+INSTALL_UID="0"
+NETDATA_GROUP="netdata"
+REINSTALL_COMMAND="./netdata-installer.sh --install /opt "
+RELEASE_CHANNEL="nightly"
+IS_NETDATA_STATIC_BINARY="yes"
+NETDATA_LIB_DIR="/opt/netdata/var/lib/netdata"
