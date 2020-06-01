@@ -41,7 +41,7 @@ email_notif() {
 		echo "email_notify parameter : ${1}; expected YES or NO"
 		exit 2
 	fi
-	echo "SEND_EMAIL="${1} > ${NETDATA_NOTIFY_FILE}
+	echo "SEND_EMAIL=${1}" > ${NETDATA_NOTIFY_FILE}
 }
 
 remove_etc_folder() {
@@ -52,7 +52,7 @@ install_netdata() {
 	# Assume files are checked
 	bash ${NETDATA_INSTALL_SCRIPT} --local-files ${NETDATA_FILE} ${NETDATA_CHECKSUM}
 	email_notif "NO"
-	remove_etc_folder
+	service netdata restart #redirect to systemctl when systemd is the service manager
 }
 
 uninstall_netdata() {
